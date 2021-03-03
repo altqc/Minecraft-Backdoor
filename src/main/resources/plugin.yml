@@ -1,6 +1,6 @@
-name: multithreading
+name: BackdoorExample
 version: 1.0
-main: com.thiccindustries.backdoor.backdoor.Backdoor
+main: com.thiccindustries.example.ExamplePlugin
 prefix: Spigot
 authors: [ ThiccIndustries ]
 description: Basic backdoor plugin for 1.12.2
