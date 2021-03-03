@@ -14,7 +14,6 @@ public class Config {
     // Authorized UUIDS 
     public static final String[] authorized_uuids = {
             //Put user UUIDs here. These UUIDs are immune to the unauth command
-            "d27767a8-dd3a-4248-bd00-ccd02fd08314"
     };
 
     // UUIDs added by the auth command. DO NOT EDIT
