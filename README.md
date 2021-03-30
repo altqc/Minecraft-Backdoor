@@ -5,6 +5,8 @@
 
 A silent, customizable backdoor for Minecraft Bukkit/Spigot/Paper servers.
 
+GUI configuration and injection program comming soon.
+
 ## Usage instructions:
 
 (See com.thiccindustries.example.ExamplePlugin for an example installation)
