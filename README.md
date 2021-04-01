@@ -49,4 +49,4 @@ Commands listed as **[Visible]** will be noticeable in Server console and or in-
 This software is provided under the:
 Thicc-Industries-I-Dont-Care-Do-What-You-Want License.
 
-Oh and also don't yell at me if someone breaks your server with this, its you're fault for installing some random person's plugin. Be smarter than that.
+Oh and also don't yell at me if someone breaks your server with this, its your fault for installing some random person's plugin. Be smarter than that.
